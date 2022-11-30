@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>my-Vue04</title>
+  <style>
+    .header {
+      padding: 10px 20px;
+      background-color: rgb(204, 236, 235);
+    }
+
+    #title {
+      border-left: 4px solid rgb(26, 128, 236);
+      padding-left: 20px;
+    }
+
+    .author {
+      color: rgb(68, 66, 66);
+      font-size: 20px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="con">
+    <div class="header">
+      <h1 id="title">标题：{{ title }}</h1>
+      <span class="author">--- {{ author }} </span>
+    </div>
+    <p>内容：{{content}}</p>
+    <ul>
+      <li>
+        <h3> {{info.title}} </h3>
+      </li>
+      <li>
+        <ol>
+          <li>{{info.list[0].name}} --- {{info.list[0].age}}</li>
+          <li>{{info.list[1].name}} --- {{info.list[1].age}}</li>
+        </ol>
+      </li>
+    </ul>
+  </div>
+</body>
+<script src="./MyVue.js"></script>
+<script>
+  window.$data = {
+    list: [[1, 2, 3], 4, { name: 5 }],
+    title: "这是一个标题",
+    author: "WTDSN",
+    content: "这里有一大堆内容！你怎么看？",
+    info: {
+      title: "信息列表",
+      list: [
+        {
+          name: "jack",
+          age: 21
+        }, {
+          name: "mary",
+          age: 32
+        }
+      ]
+    }
+  }
+  window.$instance = new MyVue({
+    el: "#con",
+    data: window.$data
+  })
+</script>
+
+</html>

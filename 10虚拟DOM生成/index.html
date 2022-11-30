@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <button onclick="change()">Change</button>
+  <div id="root" @click="change(123)">
+    <div id=" con">
+      <div class="header">
+        <h1 id="title">标题：{{ title }}</h1>
+        <span class="author">--- {{ author }} </span>
+      </div>
+      <p>内容：{{content}}</p>
+      <ul>
+        <li>{{info.title}}</li>
+        <li>
+          <ul>
+            <li>{{info.list[0].name}} --- {{info.list[0].age}}</li>
+            <li>{{info.list[1].name}} --- {{info.list[1].age}}</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</body>
+<script src="./ast/parser.js"></script>
+<script src="./ast/processTag.js"></script>
+<script src="./ast/share.js"></script>
+
+<script src="./vdom/vdom.js"></script>
+<script src="./vdom/createElement.js"></script>
+<script src="./instance/render-helpers.js"></script>
+<script src="./instance/index.js"></script>
+
+<script src="./shared/makeSet.js"></script>
+<script src="./shared/proxy.js"></script>
+<script src="./core/index.js"></script>
+<script src="./core/observer/dep.js"></script>
+<script src="./core/observer/index.js"></script>
+<script src="./core/observer/scheduler.js"></script>
+<script src="./core/observer/watcher.js"></script>
+
+<script src="./render/event.js"></script>
+<script src="./render/optimizer.js"></script>
+<script src="./render/render.js"></script>
+
+<script>
+  window.$data = {
+    list: [[1, 2, 3], 4, { name: 5 }],
+    title: "这是一个标题",
+    author: "WTDSN",
+    style: 'abc',
+    content: "这里有一大堆内容！你怎么看？",
+    info: {
+      title: "信息列表",
+      list: [
+        {
+          name: "jack",
+          age: 21
+        }, {
+          name: "mary",
+          age: 32
+        }
+      ]
+    }
+  }
+  window.$instance = new MyVue({
+    el: "#root",
+    data: window.$data,
+    methods: {
+      change() {
+        console.log(123)
+      }
+    },
+  })
+
+  function change() {
+    console.log("@");
+    $data.style = "style2"
+  }
+</script>
+
+</html>

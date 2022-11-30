@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>my-Vue02</title>
+</head>
+<style>
+  .head {
+    background-color: rgb(210, 251, 249);
+    padding: 20px;
+    border-left: 5px solid rgb(18, 156, 206);
+  }
+
+  p {
+    padding: 10px;
+    line-height: 20px;
+  }
+
+  .time {
+    display: block;
+    margin-top: 20px;
+  }
+</style>
+
+<body>
+  <div id="con">
+    <h1 class="head">{{title}}</h1>
+    <p id="p" data-a="a">
+      内容：{{context}}
+      <i class="time">--- {{time}}</i>
+    </p>
+    <footer>
+      底部内容: {{footer}}
+    </footer>
+  </div>
+</body>
+<script src="./基于递归生成虚拟节点.js"></script>
+<script src="./基于递归生成DOM节点.js"></script>
+<script>
+  let realDom = document.querySelector('#con')
+  console.log(realDom);
+
+  let VDom = createVDOM(realDom)
+  console.log(VDom);
+
+  console.log(createDOM(VDom));
+</script>
+
+</html>

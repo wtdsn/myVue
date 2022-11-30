@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="app" :class="red">
+    {{ message }}
+    <div v-if="loading">{{text}}</div>
+  </div>
+</body>
+<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<script>
+  let data = {
+    red: 'green',
+    message: "Vue",
+    loading: false,
+
+    list: [[1, 2, 3], 4, { name: 123 }],
+    list2: [1, 2, 3]
+  }
+  window.$data = data
+  var app = new Vue({
+    el: '#app',
+    data: data,
+    mounted() {
+      setTimeout(v => {
+        this.loading = true
+        this.text = "123"
+        console.log(this);
+        console.log("@", $data)
+      }, 2000)
+
+    },
+  })
+</script>
+
+</html>

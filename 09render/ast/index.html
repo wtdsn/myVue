@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <!--  <div id="root" :style="mystyle" :class="class1" v-show="myshow" v-for="v in list" @click="handleClick(ad)" :key="asd">
+    <p id="id2" v-if="aaa">内容1</p>
+    <input class="input1" value="123" v-else-if="bbb">
+    <hr v-else>
+    <br>
+    <img src="#" :width="width1" :height="height2" />
+    <MyCom></MyCom>
+    {{内容2}}
+  </div> -->
+  <div id="root">
+    <div @click.enter="aaa()" @dbclick="ee(123)" class="asd"></div>
+    <div @click="bbb"></div>
+    <div @click.stop="ccc"></div>
+    <div @click.up.a="ddd('123')"></div>
+  </div>
+</body>
+<script src="./share.js"></script>
+<script src="../optimizer.js"></script>
+<script src="../event.js"></script>
+<script src="../render.js"></script>
+<script src="./processTag.js"></script>
+<script src="./parser.js"></script>
+<script>
+  let root = document.querySelector('#root')
+  let parent = root.parentNode
+  let ast = paser(root.outerHTML)
+
+  const options = {}
+  optimizer(ast)
+  console.log(ast);
+  const { render, staticRenderFns } = generate(ast, options)
+
+  console.log(render);
+  console.log(staticRenderFns);
+</script>
+
+</html>

@@ -1,0 +1,99 @@
+/**
+ * @class VNode
+ */
+class VNode {
+  constructor(tag, data, content, type) {
+    this.tag = tag?.toLocaleLowerCase()  // 标签名 ，可能为文本，注释，无标签名
+    this.attris = data  // 属性对象
+    this.content = content  // 文本内容
+    this.type = type   // 类型 。 一般为 1 ， 文本为 3 
+    this.children = []
+  }
+
+  appendChild(node) {
+    this.children.push(node)
+  }
+}
+
+/* 
+   创建 AST 
+   vue 是获取节点，转成字符串 。然后将字符串转成 AST
+
+   这里是提供 node 去递归处理 。它存在一些问题 ，比如对于组件 ，对于 v-if v-for 等处理比较麻烦
+   因此这里并没有对这些进行处理
+*/
+// 创建 AST 
+function createVDOM(node) {
+  let type = node.nodeType, vnode = null
+
+  if (type === 1) {
+    let attris = Array.from(node.attributes), data = {}
+
+    attris.forEach((v) => {
+      data[v.name] = v.value
+    });
+
+    vnode = new VNode(node.nodeName, data, undefined, 1)
+
+    let children = node.childNodes || []
+    children.forEach(v => {
+      vnode.appendChild(createVDOM(v))
+    })
+  } else if (type === 3) {
+    vnode = new VNode(undefined, null, node.textContent, 3)
+  }
+  return vnode
+}
+
+// 根据 AST 和 data 生成 VDOM  （已渲染数据 VDOM）
+function createDOM(vnode, data) {
+  let {
+    tag, type, attris, content, children
+  } = vnode, realDom = null
+
+  if (type === 1) {
+    // 创建节点
+    realDom = document.createElement(tag)
+
+    // 添加属性
+    let keys = Object.keys(attris)
+    keys.forEach(key => {
+      realDom.setAttribute(key, attris[key])
+    })
+
+
+    children.forEach(c => {
+      realDom.appendChild(createDOM(c, data))
+    })
+
+  } else {
+    // 先对 content 进行数据渲染
+    realDom = document.createTextNode(renderData(content, data))
+  }
+
+  return realDom
+}
+
+/* 数据渲染 */
+function renderData(text, data) {
+  return text.replace(/\{\{(.+?)\}\}/g, (_, key) => {
+    if (key.includes('.') || key.includes("[")) {
+      key = key.replace(/\[|\]/g, (e) => {
+        if (e === '[') {
+          return '.'
+        } else return ''
+      })
+
+      let keys = key.split('.'), v = data
+      keys.every((k) => {
+        v = v[k]
+        return !!v
+      })
+
+      return v || ''
+    } else {
+      return data[key.trim()] || ""
+    }
+
+  })
+}
