@@ -12,7 +12,7 @@ function updateDirectives(oldVnode, vnode) {
   }
 
   const el = vnode.elm
-  let oldDir = vnode.data.directives || {}, dir = oldVnode.data.directives || {}
+  let oldDir = oldVnode.data.directives || {}, dir = vnode.data.directives || {}
 
   if (oldDir.model === dir.model) return
 
