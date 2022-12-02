@@ -49,7 +49,7 @@ export function stateMixin(MyVue) {
 
     // 如果是立即执行 , 先执行一次 cb , 仅有当前值
     if (options.immediate) {
-      cb.call(vm, [watcher.value])
+      cb.call(vm, watcher.value)
     }
 
     // 返回的函数，是取消监听 ，暂不考虑
@@ -78,14 +78,17 @@ function initMethods(vm, methods) {
 
 // computed
 function initComputed(vm, computed) {
-  // 在 vm 中挂载 watchers
+  // 在 vm 中添加 _computedWatchers 属性 ， 记录 computed 的 watcher
   const watchers = (vm._computedWatchers = {})
 
+  // 对每个 computed 进行处理
   for (const key in computed) {
     const userDef = computed[key]
     const getter = typeof userDef === 'function' ? userDef : userDef.get
 
-    // 为该属性添加 watcher
+    // 为该 computed 创建 watcher
+    // getter 即该 computed 更新时执行的函数
+    // lazy 表示惰性求值 ，依赖不更新，不求值，达到计算值缓存效果
     watchers[key] = new Watcher(
       vm,
       getter,
@@ -99,16 +102,18 @@ function initComputed(vm, computed) {
   }
 }
 
-// 将计算属性挂载到 vm 中 ， 并设置拦截 , 占不考虑不缓存的情况
+// 将计算属性挂载到 vm 中 ， 并设置拦截 , 暂不考虑 不缓存 的情况
 function defineComputed(vm, key, userDef) {
   const sharedPropertyDefinition = {
     configurable: true,
     enumerable: true,
   }
+
+  // 使用封装 getter
   sharedPropertyDefinition.get = createComputedGetter(key)
 
-  if (userDef.get)
-    sharedPropertyDefinition.set = userDef.get
+  if (userDef.set)
+    sharedPropertyDefinition.set = userDef.set
 
   Object.defineProperty(vm, key, sharedPropertyDefinition)
 }
@@ -118,9 +123,19 @@ function createComputedGetter(key) {
   return function computedGetter() {
     const watcher = this._computedWatchers && this._computedWatchers[key]
     if (watcher) {
+      // 第一次调用 ，数据默认是脏的 ，会调用computed
+      // computed 读取其他数据，其他数据的 getter 触发 ，收集此 watcher , 之后更新就可以更新 computed
+      // 如果数据脏了 ，即 computed 的依赖数据更新了，则需要重新计算
       if (watcher.dirty) {
         watcher.evaluate()
       }
+
+      // 收集页页面 or 组件的 watcher
+      // 这是因为 computed 里依赖的数据页面k可能没有使用
+      // 也就是 computed 的依赖数据更新了 ，通过了 computed 更新
+      // 但页面并不知道 computed 更新 
+      // 因此这里是通知 watcher 对应的全部 Dep 收集页面的 watcher , 从而这些数据更新的时候
+      // 即通知 computed 的 watche 更新 computed , 同时也通知页面的 computed 更新页面
       if (Dep.target) {
         watcher.depend()
       }

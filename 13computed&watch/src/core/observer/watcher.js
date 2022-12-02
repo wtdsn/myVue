@@ -66,10 +66,10 @@ export class Watcher {
     pushTarget(this)
 
     try {
-      value = this.getter.call(this.vm, this.vm); // 上下文的问题就解决了
+      value = this.getter.call(this.vm, this.vm);
     } finally {
       if (this.deep) {
-        traverse(value)
+        // traverse(value)
       }
     }
 
@@ -78,10 +78,10 @@ export class Watcher {
     return value
   }
 
-  /**
-   * 执行, 并判断是懒加载, 还是同步执行, 还是异步执行: 
-   * 我们现在只考虑 异步执行 ( 简化的是 同步执行 )
-   */
+
+  /* 
+     run 方法 ，内部调用 get 方法
+  */
   run() {
     const value = this.get();
     if (this.cb) {
@@ -95,7 +95,7 @@ export class Watcher {
   update() {
     // 如果是异步的 ， 比如 computed 默认异步
     if (this.lazy) {
-      // update 了 ，表示 computed 的值已经变化 ，但是异步求新值
+      // update 了 ，表示 computed 的值已经变化 ，但此时并不立即更新，在读取该 computed 才更新
       this.dirty = true
     } else {
       queueWatcher(this)
@@ -122,13 +122,13 @@ export class Watcher {
     if (!this.newDepsIds.has(dep.id)) this.newDeps.push(dep)
   }
 
-  // 计算复制 ，此时 dirty 即为 false
+  // 计算赋值 ， 用于 computed 在数据需要更新时，即 dirty 为 true 时进行数据更新
   evaluate() {
     this.value = this.get()
     this.dirty = false
   }
 
-  // 
+  // 用于 computed , 让其他 deps 收集当前页面的 watcher
   depend() {
     let i = this.deps.length
     while (i--) {

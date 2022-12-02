@@ -21,8 +21,10 @@
   <div id="root">
     <button @click="change">change</button>
     <input type="text" v-model="data">
-    <div>{{i}} -- {{v}}</div>
-    <div>computed = {{myc}}</div>
+    <div>{{i}} -- {{v}} --- {{j}}</div>
+    <div>computed1 = {{myc}}</div>
+    <div>computed2 = {{myc}}</div>
+    <div>computed3 = {{myc}}</div>
     <ul>
       <li v-for="(v,i) in list">
         {{i}} -- {{ v.name}}

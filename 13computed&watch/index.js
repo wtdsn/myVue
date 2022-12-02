@@ -4,8 +4,8 @@ window.$instance = new MyVue({
   el: "#root",
   computed: {
     myc: function () {
-      console.log("computed");
-      return this.i * 3
+      console.log("computed - 我只执行一次");
+      return this.i * this.j
     }
   },
   watch: {
@@ -27,6 +27,7 @@ window.$instance = new MyVue({
       name: 'mary'
     }],
     i: 1,
+    j: 3,
     v: "A",
     p: "输入"
   },
@@ -37,6 +38,11 @@ window.$instance = new MyVue({
       //   name: 'puty'
       // })
       this.i++
+
+      setTimeout(() => {
+        console.log("@");
+        this.j++
+      }, 1000)
       console.log(this.data);
     }
   },
