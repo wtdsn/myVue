@@ -3,6 +3,7 @@ import { renderMixin } from './instance/render'
 import { lifecycleMixin } from "./instance/lifecycle"
 import { stateMixin } from './instance/state'
 
+// MyVue 构造函数
 export function MyVue(options) {
   this._init(options)
 }
