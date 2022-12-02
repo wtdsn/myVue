@@ -24,8 +24,10 @@ export function initState(vm) {
 
 }
 
-// 添加 $watch
+// 添加 $watch ， 在 vue 中这里还有 $get $set 等的方法
 export function stateMixin(MyVue) {
+
+  // 挂载 $watch 方法
   MyVue.prototype.$watch = function (
     expOrFn,
     cb,
@@ -39,15 +41,15 @@ export function stateMixin(MyVue) {
 
     const vm = this
     options = options || {}
-    options.user = true
-    // 为该数据创建 watch
+
+    // 为该数据创建 watch ， expOrFn 为字符串
+    // 在创建 watcher 后 ，执行的 get 会读取 expOrFn 对应的数据，收集当前的 watcher
+    // 在之后该数据更新时 ，通知 watcher 更新，watcher 会保留旧值 ，更新获取新值，调用 cb ，即 watch 的回调, 传入新旧值
     const watcher = new Watcher(vm, expOrFn, options, cb)
 
-    // 如果是立即执行
+    // 如果是立即执行 , 先执行一次 cb , 仅有当前值
     if (options.immediate) {
-      pushTarget()  // 将 undefind 压入
       cb.call(vm, [watcher.value])
-      popTarget()
     }
 
     // 返回的函数，是取消监听 ，暂不考虑

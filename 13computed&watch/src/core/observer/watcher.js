@@ -3,9 +3,9 @@
 
     也用于 computed watch
 
-    watch 提供4个方法
+    Watcher 提供4个方法
     set 用于执行函数 ，或计算 。比如在 computed 中使用 。或者是渲染函数
-    run 运行 ，内部是调用 get 函数 。 vue 中通过 nextTicket 异步执行
+    run 运行 ，内部是调用 get 函数 。 vue 中通过 nextTick 异步执行
     update 对外公布的方法 。 在属性变化时 ，通过内部更新。内部调用 run 方法
     cleanupDep 清空依赖列表
     addDep 添加 dep
@@ -20,7 +20,6 @@ let watcherId = 1
 export class Watcher {
 
   /**
-   * Creates an instance of Watcher.
    * @param {any} vm    vue 实例
    * @param {string|function} expOrfn  渲染函数 ，或 watch ，暂时仅考虑函数
    * @param {object} options computed 或者 watch 的配置项
@@ -30,7 +29,7 @@ export class Watcher {
     this.id = watcherId++
     this.vm = vm
 
-    // getter 函数可能是渲染函数，也可能是 watcher
+    // getter 函数可能是渲染函数，也可能是字符串 options 中的 watch 使用
     this.getter = typeof expOrfn === 'function' ? expOrfn : parsePath(expOrfn)
     this.cb = cb
 
@@ -138,7 +137,7 @@ export class Watcher {
   }
 }
 
-// 临时
+// 将字符串转换成函数，此函数读取了 vm 中被监听的数据的值
 function parsePath(path) {
   const segments = path.split('.')
   return function (obj) {
