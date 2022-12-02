@@ -14,9 +14,10 @@ export function initLifecycle(vm) {
   vm._isBeingDestroyed = false
 }
 
+// 再原型挂载一些方法 ，比如 _update , forceUpdate , destory等（这里仅实现一部分）
 export function lifecycleMixin(MyVue) {
   /* 
-   使用 diff 算法 ，使用新 VDOM 更新 旧 VDOM ，刷新页面
+   使用 diff 算法 （内部调用 __path__ ），使用新 VDOM 更新 旧 VDOM ，刷新页面
   */
   MyVue.prototype._update = function (vnode) {
     let vm = this
@@ -45,7 +46,7 @@ export function lifecycleMixin(MyVue) {
 export function mountComponent(vm, el) {
   vm.$el = el
 
-  // 为该 vm 创建 watch
+  // watch 的 get 方法为此方法
   let updateComponent = () => {
     // _render 方法将执行 render 函数  和数据生成 VDOM
     // _update 对比新老 VDOM ，进行页面更新
@@ -53,7 +54,7 @@ export function mountComponent(vm, el) {
   }
 
   // 为该 vm 创建 watcher 
-  // 创建一个 watch . 传入渲染函数X
+  // 创建一个 watch . 传入渲染函数
   new Watcher(this, updateComponent)
 
   return vm
