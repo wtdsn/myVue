@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>B</title>
+</head>
+<script>
+  window.onload = (event) => {
+    window.count = 0;
+    window.addEventListener('popstate', (state) => {
+      console.log('onpopState invoke');
+      console.log(state);
+      console.log(`location is ${location}`);
+      var isConfirm = confirm('确认要返回吗?');
+      if (isConfirm) {
+        console.log('I am going back');
+        history.back();
+      } else {
+        console.log('push one');
+        window.count++;
+        const state = {
+          foo: 'bar',
+          count: window.count,
+        };
+        history.pushState(
+          state,
+          'test',
+          `index.html?count=${window.count
+          }&timeStamp=${new Date().getTime()}`
+        );
+        console.log(history.state);
+      }
+    });
+
+    console.log(`first location is ${location}`);
+    setTimeout(function () {
+      window.count++;
+      const state = {
+        foo: 'bar',
+        count: window.count,
+      };
+      history.pushState(
+        state,
+        'test',
+        `test3.html?count=${window.count}&timeStamp=${new Date().getTime()}`
+      );
+      console.log(`after push state locaiton is ${location}`);
+    }, 100);
+  };
+
+</script>
+
+<body>
+  <!-- <button onclick="myclick()">click</button> -->
+</body>
+
+</html>

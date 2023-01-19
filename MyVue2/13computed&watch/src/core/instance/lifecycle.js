@@ -20,6 +20,7 @@ export function lifecycleMixin(MyVue) {
    使用 diff 算法 （内部调用 __path__ ），使用新 VDOM 更新 旧 VDOM ，刷新页面
   */
   MyVue.prototype._update = function (vnode) {
+
     let vm = this
     const preEl = vm.$el
     const prevNode = vm._vnode
@@ -29,6 +30,13 @@ export function lifecycleMixin(MyVue) {
       vm.$el = vm.__patch__(preEl, vnode)
     } else {
       // 更新
+      console.log('vnode', vnode)
+      if (window.a) {
+        window.b = vnode.children[1].data.on
+      } else {
+        window.a = vnode.children[1].data.on
+      }
+
       vm.$el = vm.__patch__(prevNode, vnode)
     }
   }

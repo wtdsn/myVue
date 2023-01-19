@@ -1,6 +1,6 @@
 import { observer } from '../observer/index'
 import { Watcher } from '../observer/watcher'
-import { Dep, pushTarget, popTarget } from '../observer/dep'
+import { Dep } from '../observer/dep'
 import { proxy } from '../../shared'
 
 // 状态初始化

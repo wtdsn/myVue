@@ -5,21 +5,30 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>A</title>
 </head>
+<script>
+ window.addEventListener('popstate',()=>{
+  console.log("@");
+ })
+
+
+  function myclick() {
+    console.log("click");
+    history.pushState(
+      {
+        name: "A"
+      },
+      '',
+      'http://127.0.0.1:5500/myVue/test3.html'
+    )
+    console.log(history.length);
+    // history.go(-1)
+  }
+</script>
 
 <body>
-  <div class="abc">
-    <ul>
-      <li>123</li>
-      <li>123</li>
-    </ul>
-    <button>123</button>
-  </div>
+  <button onclick="myclick()">click</button>
 </body>
-<script>
-  console.log(document.querySelector('.abc').textContent);
-
-</script>
 
 </html>

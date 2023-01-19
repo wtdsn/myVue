@@ -1,4 +1,5 @@
-class VNode {
+import { toString } from "../shared"
+export class VNode {
   constructor(
     tag,
     data,
@@ -7,7 +8,7 @@ class VNode {
     elm,
     context,
     componentOptions,
-    asyncFactory
+    /*     asyncFactory */
   ) {
     this.tag = tag
     this.data = data
@@ -15,8 +16,9 @@ class VNode {
     this.text = text
     this.elm = elm
     this.context = context
+
     this.componentOptions = componentOptions
-    this.asyncFactory = asyncFactory
+    /*  this.asyncFactory = asyncFactory */
 
     this.isStatic = false
     this.key = data && data.key
@@ -26,14 +28,13 @@ class VNode {
 
 
 // 创建空节点 
-function createEmptyVNode(text) {
-
+export function createEmptyVNode(text) {
   const node = new VNode()
   node.text = text
   return node
 }
 
 // 或仅文字节点
-function createTextVNode(val) {
+export function createTextVNode(val) {
   return new VNode(undefined, undefined, undefined, toString(val))
 }

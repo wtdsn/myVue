@@ -24,10 +24,10 @@ MyVue.prototype.mount = function () {
 MyVue.prototype.createRender = function () {
   let target = document.querySelector(this._el)
   this._parent = target.parentNode
-  let ast = createVDOM(target)
+  let vnode = createVDOM(target)
 
   return render = function () {
-    return createDOM(ast, this.data)
+    return createDOM(vnode, this.data)
   }
 }
 
@@ -49,11 +49,7 @@ class VNode {
   }
 }
 
-/* 
-   创建 AST 
-   vue 是获取节点，转成字符串 。然后将字符串转成 AST
-*/
-// 创建 AST 
+// 创建 VNODE
 function createVDOM(node) {
   let type = node.nodeType, vnode = null
 
@@ -76,7 +72,7 @@ function createVDOM(node) {
   return vnode
 }
 
-// 根据 AST 和 data 生成 VDOM  （已渲染数据 VDOM）
+// 根据 VNode 和 data 生成真实 DOM  实际上 Vue 不是这样子的
 function createDOM(vnode, data) {
   let {
     tag, type, attris, content, children

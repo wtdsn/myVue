@@ -9,34 +9,25 @@
 </head>
 
 <body>
-  <div id="app" :class="red">
-    {{ message }}
-    <div v-if="loading">{{text}}</div>
+  <div id="app">
+    <div @click="say">{{message}}</div>
   </div>
 </body>
-<script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+<!-- <script src="https://cdn.jsdelivr.net/npm/vue@2"></script> -->
+<script src="../vue2源码/vue@2.js"></script>
 <script>
-  let data = {
-    red: 'green',
-    message: "Vue",
-    loading: false,
-
-    list: [[1, 2, 3], 4, { name: 123 }],
-    list2: [1, 2, 3]
-  }
-  window.$data = data
   var app = new Vue({
     el: '#app',
-    data: data,
-    mounted() {
-      setTimeout(v => {
-        this.loading = true
-        this.text = "123"
-        console.log(this);
-        console.log("@", $data)
-      }, 2000)
-
+    data() {
+      return {
+        message: 'Hello Vue2!'
+      }
     },
+    methods: {
+      say() {
+        this.message = "Time" + Date.now()
+      }
+    }
   })
 </script>
 

@@ -1,13 +1,9 @@
 /* 
-   将模板节点转换成抽象语法树
-   也就是 AST
-   
-   
+   将模板节点转换成 VDOM
 */
 
 /* 
-   AST 不是真的 DOM 节点。而是对象
-   对象描述了节点的类型，属性，内容等
+  VDOM  对象描述了节点的类型，属性，内容等
 */
 
 class VNode {
@@ -30,7 +26,7 @@ class VNode {
  * @param {element} node 
  * @returns {VDOM}
  */
-function createAST(node) {
+function createVDOM(node) {
   let type = node.nodeType, vnode = null
 
   if (type === 1) {
@@ -54,13 +50,11 @@ function createAST(node) {
 
 
 /* 
-   如何区别元素节点和组件 （map）
-
    实际上 , Vue 是将 模板转换成抽象语法树保留起来
-   抽象语法树与数据结合成虚拟 DOM 
+   抽象语法树再生成 render 函数
+   render 函数与数据结合成虚拟 DOM 
 
-   新老虚拟DOM 对比，得出需要修改的节点
+   新老虚拟DOM 对比，得出需要修改的部分
    通过 diff 算法 ，对比需要更新的部分去修改老的 虚拟DOM 
    而老的虚拟 DOM 与节点是一一对应的 。再去更新页面
-   
 */

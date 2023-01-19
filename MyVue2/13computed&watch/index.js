@@ -1,6 +1,6 @@
 import MyVue from './src/runtime/runtime-with-compiler'
 
-window.$instance = new MyVue({
+/* window.$instance = new MyVue({
   el: "#root",
   computed: {
     myc: function () {
@@ -28,7 +28,7 @@ window.$instance = new MyVue({
     }],
     i: 1,
     j: 3,
-    v: "A",
+    v: "A1",
     p: "输入"
   },
   methods: {
@@ -40,10 +40,23 @@ window.$instance = new MyVue({
       this.i++
 
       setTimeout(() => {
-        console.log("@");
+        console.log("@5");
         this.j++
       }, 1000)
       console.log(this.data);
     }
   },
+})
+ */
+
+new MyVue({
+  el: "#root",
+  data: {
+    message: 'Hello Vue!'
+  },
+  methods: {
+    say() {
+      this.message = "Time" + Date.now()
+    }
+  }
 })
